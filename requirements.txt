@@ -1,0 +1,3 @@
+termcolor
+nmap3
+scapy
