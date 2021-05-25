@@ -9,7 +9,7 @@ Not well-tested for any platform other than my Kali Machine
 ## Requirement
 - net-tools package
 - nmap
-- arpspoof (can be install with dnsniff on Linux)
+- arpspoof (can be installed with dnsniff on Linux)
 
 ## Installation and Usage
 
