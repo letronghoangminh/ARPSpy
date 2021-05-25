@@ -228,8 +228,8 @@ def sniffHTTPPostTraffic(iface):
 
 sniffHTTPPostTraffic(iface)
 
-# If you find some error in using the tool
-# try to understand and modify the script
-# it is not well-tested in other plassforms than my Kali Machine
+# If you find some error in using the tool,
+# try to understand and modify the script.
+# It is not well-tested for any platform other than my Kali Machine
 
 # Author: Minh Itachi
