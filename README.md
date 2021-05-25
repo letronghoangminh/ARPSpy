@@ -4,7 +4,7 @@ Using many library to perform ARP Spoof and auto-sniffing HTTP packet containing
 
 Give me a star if you like it =))
 
-Not well-tested in other plassforms than my Kali Machine
+Not well-tested for any platform other than my Kali Machine
 
 ## Requirement
 - net-tools package
