@@ -28,7 +28,7 @@ Python3 only
 MIT
 
 ## Version
-Current version: 1.0.0
+Current version: 1.0.1
 
 ## Author:
 #### Lê Trọng Hoàng Minh (Minh Itachi)
