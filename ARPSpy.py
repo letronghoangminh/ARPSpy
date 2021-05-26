@@ -171,7 +171,7 @@ def OSScan(host):
                     port["service"][
                         "name"] + " - State: " + port["state"], "blue"))
     except:
-        OSScan(host)
+        print(colored("[!] Error happened in scanning device, please try again with another device or skip this step", "red"))
 
 
 target, gateway = chooseHostToAttack(listOfHosts)
