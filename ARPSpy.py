@@ -194,7 +194,7 @@ print(colored("-----------------------------------------------------------------
 
 
 iface = input(colored("[-] Input your network interface to sniff ('ifconfig' or 'ip a' command on Linux): ", "yellow"))
-print(colored("[+] Listening on " + iface " for any HTTP POST data...", "yellow"))
+print(colored("[+] Listening on " + iface + " for any HTTP POST data...", "yellow"))
 print(colored("[+] Data will be save in data.txt in the same directory", "yellow"))
 print(colored("[+] You have to check the data by hand to find what you're interested in", "yellow"))
 print(colored("[+] If the file is empty, please patient and keep waiting", "yellow"))
