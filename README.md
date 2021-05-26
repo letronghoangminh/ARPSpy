@@ -20,7 +20,7 @@ Python3 only
 ```
 	git clone https://github.com/letronghoangminh/ARPSpy
 	cd ARPSpy
-	sudo python3 -m pip3 install -r requirements.txt
+	sudo pip3 install -r requirements.txt
 	sudo python3 ARPSpy.py 
 ```
 
