@@ -8,8 +8,6 @@ Not well-tested for any platform other than my Kali Machine
 
 ## Requirement
 - net-tools package
-- nmap
-- arpspoof (can be installed along with dnsniff package on Linux)
 - pip3
 - python3
 
