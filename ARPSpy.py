@@ -122,7 +122,7 @@ def chooseHostToAttack(listOfHosts):
 
     choice = ""
     while choice != "n" and choice != "N":
-        choice = input(colored("[-] Do you want to perform OS detection scanning on any host?(Y/N): ", "yellow"))
+        choice = input(colored("[-] Do you want to perform OS detection scanning on any host(Increase chance to find right target)?(Y/N): ", "yellow"))
         if choice == "Y" or choice == "y":
             hostToScan = input(colored("[-] Host to scan (may take a few minutes): ", "yellow"))
             while hostToScan not in listOfHosts:
